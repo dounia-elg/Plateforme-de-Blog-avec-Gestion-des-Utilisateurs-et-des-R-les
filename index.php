@@ -22,11 +22,16 @@
         </div>
     </nav>
 
+    
+
     <!----------- Hero Section ---------->
     <section class="bg-violet-700 text-white text-center py-16">
         <h1 class="text-4xl font-bold">Bienvenue sur notre Blog</h1>
         <p class="mt-4 text-lg">Lisez et partagez vos idées.</p>
     </section>
+
+    
+
 
     <!---------- Articles List ----------->
     <section class="py-16">
