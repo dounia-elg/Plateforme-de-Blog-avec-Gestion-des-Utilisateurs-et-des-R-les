@@ -1,79 +1,58 @@
 <?php
-session_start();
-require 'connect.php'; 
+require './connect.php';
+session_start(); 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = htmlspecialchars(trim($_POST['email']));
-    $password = htmlspecialchars(trim($_POST['password']));
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
     
-    if (!empty($email) && !empty($password)) {
+    $stmt = $conn->prepare("SELECT iduser, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user && password_verify($password, $user['password'])) {
         
-        $query = $db->prepare('SELECT * FROM users WHERE email = ? ');
-        $query->bind_param('s', $email, $email);
-        $query->execute();
-        $result = $query->get_result();
-        $email = $result->fetch_assoc();
+        $_SESSION['iduser'] = $user['iduser'];
 
         
-        if ($email && password_verify($password, $user['password'])) {
-            
-            $_SESSION['user'] = $user['iduser'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['role'] = $user['idrole'];
-
-            
-            header('Location: index.php');
-            exit();
-        } else {
-            $error = "Nom d'utilisateur ou mot de passe incorrect.";
-        }
+        header("Location: index.php");
+        exit;
     } else {
-        $error = "Veuillez remplir tous les champs.";
+        echo "Invalid email or password.";
     }
+
+    $stmt->close();
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <form method="POST" class="bg-white p-8 rounded shadow-lg w-full max-w-sm">
 
-    <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Connexion</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Login</h2>
 
-       
-        <?php if (!empty($error)): ?>
-            <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
-                <?= $error; ?>
-            </div>
-        <?php endif; ?>
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+            <input type="email" name="email" id="email" placeholder="Your email" require class="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400">
+        </div>
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+            <input type="password" name="password" id="password" placeholder="Your password" required class="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400">
+        </div>
 
-        
-        <form action="login.php" method="POST">
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700 font-medium">Email</label>
-                <input type="text" name="username" id="username" 
-                       class="w-full mt-2 p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                       required>
-            </div>
-            <div class="mb-4">
-                <label for="password" class="block text-gray-700 font-medium">Mot de passe</label>
-                <input type="password" name="password" id="password" 
-                       class="w-full mt-2 p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300" required>
-            </div>
-            
-            <button type="submit" 
-                    class="w-full bg-violet-600 text-white py-3 rounded-lg hover:bg-violet-700 transition">Connexion</button>
-        </form>
-
-        <p class="text-center text-gray-600 text-sm mt-4">Pas encore inscrit ? <a href="./register.php" class="text-violet-600 hover:underline">Créer un compte</a></p>
-    </div>
-
+        <button type="submit"class="w-full px-4 py-2 font-semibold text-white bg-violet-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-violet-400">Login</button>
+        <p class="mt-4 text-sm text-center text-gray-600">Don't have an account? <a href="./register.php" class="text-violet-500 hover:underline">Register here</a></p>
+    </form>
 </body>
 </html>
+
