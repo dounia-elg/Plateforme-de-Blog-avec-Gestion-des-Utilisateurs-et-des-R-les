@@ -20,7 +20,7 @@
         </div>
 
 
-        <!-- <div class="flex gap-4">
+        <div class="flex gap-4">
             <?php
             session_start();
             if (isset($_SESSION['username'])) {
@@ -32,7 +32,7 @@
                 echo '<a href="./register.php" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Sign up</a>';
             }
             ?>
-        </div> -->
+        </div>
 
     </nav>
 
