@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $stmt = $conn->prepare("INSERT INTO users (username, email, password, idrole) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("sssi", $username, $email, $hashedPassword, $idrole);
+        
 
         if ($stmt->execute()) {
             echo "Registration successful. <a href='./login.php'>Login here</a>";
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class=" flex items-center justify-center min-h-screen bg-cover bg-center" style="background-image: url('');">
     <form method="POST" class="bg-white p-8 rounded shadow-lg w-full max-w-sm">
 
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Register</h2>

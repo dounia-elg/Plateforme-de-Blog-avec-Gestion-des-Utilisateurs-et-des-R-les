@@ -1,66 +1,56 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
 
-    <!------------ Navbar ---------->
-    <nav class="bg-violet-900 text-white p-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold">Blog</a>
-            <div>
-                <a href="#" class="hover:text-gray-200">Accueil</a>
-                <a href="#" class="ml-4 hover:text-gray-200">Tags</a>
-                <a href="./login.php" class="ml-4 hover:text-gray-200">Connexion</a>
-                <a href="./register.php" class="ml-4 hover:text-gray-200">Inscription</a>
-                
-            </div>
+     <!---------------- Navbar ------------------>
+    <nav class="bg-white shadow-md py-4 px-6 flex items-center justify-between">
+        <div class="text-2xl font-bold text-violet-600">BlogPlatform</div>
+
+        <div class="flex gap-6 text-gray-700 font-bold">
+            <a href="./index.php" class="hover:text-violet-500 " >Home</a>
+            <a href="./tags.php" class="hover:text-violet-500">Tags</a>
+            <a href="#" class="hover:text-violet-500">About</a>
+            <a href="#" class="hover:text-violet-500">My Article</a>
         </div>
+
+
+        <!-- <div class="flex gap-4">
+            <?php
+            session_start();
+            if (isset($_SESSION['username'])) {
+                echo '<span class="text-2xl font-bold text-violet-600 ">Welcome , ' . htmlspecialchars($_SESSION['username']) . '!</span>';
+                
+                echo '<a href="./logout.php" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Logout</a>';
+            } else {
+                echo '<a href="./login.php" class="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600">Login</a>';
+                echo '<a href="./register.php" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Sign up</a>';
+            }
+            ?>
+        </div> -->
+
     </nav>
 
-    
-
-    <!----------- Hero Section ---------->
-    <section class="bg-violet-700 text-white text-center py-16">
-        <h1 class="text-4xl font-bold">Bienvenue sur notre Blog</h1>
-        <p class="mt-4 text-lg">Lisez et partagez vos idées.</p>
-    </section>
-
-    
 
 
-    <!---------- Articles List ----------->
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Articles</h2>
-
-            
-            <div class="bg-white p-6 mb-4 shadow-md rounded-lg">
-                <h3 class="text-xl font-semibold text-gray-800">Titre de l'Article</h3>
-                <p class="mt-2 text-gray-600">description de l'article</p>
-                <a href="#" class="text-blue-600 mt-2 inline-block">Lire plus</a>
-            </div>
-
-            
-            
+    <!-------------------------- Hero--------------------->
+    <div class="relative bg-cover bg-center h-[500px]" style="background-image: url('./hero4.jpg');">
+        
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white gap-6">
+            <h2 class="text-4xl font-bold mb-4">Unleash Your Creativity:<br> Create, Share, and Connect with the World</h2>
+            <a href="./create-article.php" class="px-6 py-3 text-white bg-violet-500 rounded-lg text-lg font-semibold hover:bg-violet-600">Create Article</a>
         </div>
-    </section>
+    </div>
 
-    <!----------- Tags Section --------------->
-    <section class="py-8 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Tags</h2>
-            <div>
-                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-full inline-block mb-2 mr-2">Technologie</a>
-                <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-full inline-block mb-2 mr-2">Design</a>
-                <a href="#" class="bg-yellow-500 text-white px-4 py-2 rounded-full inline-block mb-2 mr-2">Éducation</a>
-            </div>
-        </div>
-    </section>
+
 
 </body>
 </html>
+
+
+

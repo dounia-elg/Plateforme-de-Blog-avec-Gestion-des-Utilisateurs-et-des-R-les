@@ -1,32 +1,45 @@
 <?php
 require './connect.php';
-session_start(); 
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    
-    $stmt = $conn->prepare("SELECT iduser, password FROM users WHERE email = ?");
+   
+    $stmt = $conn->prepare("SELECT iduser, username, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
+    
     if ($user && password_verify($password, $user['password'])) {
         
+        $_SESSION['username'] = $user['username']; 
         $_SESSION['iduser'] = $user['iduser'];
+
+        
+        $token = bin2hex(random_bytes(16));
+
+        
+        $stmtInsert = $conn->prepare("INSERT INTO userLogin (iduser, token) VALUES (?, ?)");
+        $stmtInsert->bind_param("is", $user['iduser'], $token);
+        $stmtInsert->execute();
+        $stmtInsert->close();
 
         
         header("Location: index.php");
         exit;
     } else {
+        
         echo "Invalid email or password.";
     }
 
     $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class=" flex items-center justify-center min-h-screen bg-cover bg-center" style="background-image: url('');">
     <form method="POST" class="bg-white p-8 rounded shadow-lg w-full max-w-sm">
 
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Login</h2>
