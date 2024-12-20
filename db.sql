@@ -5,11 +5,13 @@ CREATE TABLE users (
     iduser INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- Increased length for password
+    password VARCHAR(255) NOT NULL, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     idrole INT NOT NULL,
     FOREIGN KEY (idrole) REFERENCES roles(idrole)
 );
+
+select * from users;
 
 CREATE TABLE roles (
     idrole INT PRIMARY KEY AUTO_INCREMENT,
@@ -62,6 +64,8 @@ CREATE TABLE userLogin (
     token VARCHAR(255) NOT NULL,
     FOREIGN KEY (iduser) REFERENCES users(iduser) ON DELETE CASCADE
 );
+
+select * from userLogin;
 
 SELECT * FROM roles;
 

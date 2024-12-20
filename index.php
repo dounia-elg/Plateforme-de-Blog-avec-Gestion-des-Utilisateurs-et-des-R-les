@@ -1,3 +1,15 @@
+<?php
+require './connect.php'; 
+$query = "SELECT articles.title, articles.content,articles.image, users.username, articles.created_at 
+          FROM articles 
+          JOIN users ON articles.iduser = users.iduser 
+          ORDER BY articles.created_at DESC";
+
+$result = $conn->query($query);
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,6 +58,38 @@
             <a href="./create-article.php" class="px-6 py-3 text-white bg-violet-500 rounded-lg text-lg font-semibold hover:bg-violet-600">Create Article</a>
         </div>
     </div>
+
+
+    <div class="bg-gray-100 py-10">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">Latest Articles</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc())  : ?>
+                    <div class="p-6 bg-white rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-violet-600 mb-2"><?= htmlspecialchars($row['title']) ?></h3>
+  
+                
+                        <?php if (!empty($row['image'])): ?>
+                            <img src="<?= $row['image'] ?>" alt="Article Image" class="w-full h-auto rounded-lg mb-4">
+                        <?php else: ?>
+                            <p class="text-red-500">Image not available</p>
+                        <?php endif; ?>                        
+                            <p class="text-gray-700 mb-4"><?= nl2br(htmlspecialchars($row['content'])) ?></p>
+                            <div class="text-sm text-gray-500">By <?= htmlspecialchars($row['username']) ?> on <?= date("F j, Y", strtotime($row['created_at'])) ?></div>
+                    </div>
+                <?php endwhile; ?>
+
+            <?php else: ?>
+                <p>No articles found!</p>
+            <?php endif; ?>
+
+            </div>
+        </div>
+    </div>
+
+    
 
 
 
