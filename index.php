@@ -1,6 +1,6 @@
 <?php
 require './connect.php'; 
-$query = "SELECT articles.title, articles.content,articles.image, users.username, articles.created_at 
+$query = "SELECT articles.idarticle, articles.title, articles.content,articles.image, users.username, articles.created_at 
           FROM articles 
           JOIN users ON articles.iduser = users.iduser 
           ORDER BY articles.created_at DESC";
@@ -17,6 +17,7 @@ $result = $conn->query($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="bg-gray-100">
 
@@ -78,6 +79,16 @@ $result = $conn->query($query);
                         <?php endif; ?>                        
                             <p class="text-gray-700 mb-4"><?= nl2br(htmlspecialchars($row['content'])) ?></p>
                             <div class="text-sm text-gray-500">By <?= htmlspecialchars($row['username']) ?> on <?= date("F j, Y", strtotime($row['created_at'])) ?></div>
+
+                            <div class="flex gap-4 justify-end">
+                                <a href="./update-article.php?idarticle=<?= $row['idarticle'] ?>" class="p-2  text-blue ">
+                                    <i class="fa-solid fa-pen-to-square" style="color: #916dfd;"></i>
+                                </a>
+                                <a href="./delete-article.php?idarticle=<?= $row['idarticle'] ?>" class="p-2 text-red " onclick="return confirm('Are you sure you want to delete this article?')">
+                                    <i class="fa-solid fa-trash-can" style="color: #e92b2b;"></i>
+                                </a>
+
+                            </div>
                     </div>
                 <?php endwhile; ?>
 

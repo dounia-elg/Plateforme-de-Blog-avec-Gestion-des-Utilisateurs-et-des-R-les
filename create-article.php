@@ -2,28 +2,23 @@
 require './connect.php';
 session_start();
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
     $title = $_POST['title'];
     $content = $_POST['content'];
-    $image = $_POST['image']; 
+    $image = $_POST['image'];
 
-    
-    $query = "INSERT INTO articles (title, content, image, iduser) 
-              VALUES ('$title', '$content', '$image', '$_SESSION[iduser]')";
-    
-    if ($conn->query($query)) {
-        header("Location: index.php"); 
+    $stmt = $conn->prepare("INSERT INTO articles (title, content, image, iduser) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $title, $content, $image, $_SESSION['iduser']);
+
+    if ($stmt->execute()) {
+        header("Location: index.php");
     } else {
         $error = "There was an error creating the article.";
     }
+
+    $stmt->close();
 }
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>
