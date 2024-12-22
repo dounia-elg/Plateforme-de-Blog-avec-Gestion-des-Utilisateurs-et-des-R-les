@@ -87,7 +87,7 @@ $result = $conn->query($query);
                             <h4 class="text-lg font-bold mb-2">Comments:</h4>
                             <?php
                             $idarticle = $row['idarticle'];
-                            $stmt = $conn->prepare("SELECT c.content, c.created_at, u.username FROM comments c INNER JOIN users u ON c.iduser = u.iduser WHERE c.idarticle = ? ORDER BY c.created_at ASC");
+                            $stmt = $conn->prepare("SELECT c.idcomment, c.content, c.created_at, u.username FROM comments c INNER JOIN users u ON c.iduser = u.iduser WHERE c.idarticle = ? ORDER BY c.created_at ASC");
                             $stmt->bind_param("i", $idarticle);
                             $stmt->execute();
                             $comments = $stmt->get_result();
@@ -102,13 +102,14 @@ $result = $conn->query($query);
                                         </div>
                                         <p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
                                         <div class="flex gap-2 justify-end">
-                                            <a href="./Comments/update-comment.php?idcomment=<?= $row['idcomment'] ?>" class="p-2  text-blue ">
-                                                <i class="fa-solid fa-pen" style="color: #9977fd;"></i>
+                                            
+                                            <a href="./Comments/update-comment.php?idcomment=<?= $comment['idcomment'] ?>" class="p-2 text-blue-500 hover:text-blue-700">
+                                                <i class="fa-solid fa-pen" style="color: #007bff;"></i> 
                                             </a>
-                                            <a href="./Comments/delete-comment.php?idcomment=<?= $row['idcomment'] ?>" class="p-2 text-red " onclick="return confirm('Are you sure you want to delete this comment?')">
-                                                <i class="fa-solid fa-trash-can" style="color: #e92b2b;"></i>
+                                            
+                                            <a href="./Comments/delete-comment.php?idcomment=<?= $comment['idcomment'] ?>" class="p-2 text-red-500 hover:text-red-700" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                                <i class="fa-solid fa-trash-can" style="color: #e92b2b;"></i> 
                                             </a>
-
                                         </div>
                                         
                                     </div>
