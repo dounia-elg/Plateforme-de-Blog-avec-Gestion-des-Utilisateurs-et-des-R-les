@@ -1,8 +1,21 @@
 <?php
 require './connect.php'; 
+session_start();
+
 
 if (isset($_GET['idarticle'])) {
     $idarticle = $_GET['idarticle'];
+
+    
+    $stmt = $conn->prepare("SELECT * FROM articles WHERE idarticle = ? AND iduser = ?");
+    $stmt->bind_param("ii", $idarticle, $_SESSION['iduser']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $article = $result->fetch_assoc();
+
+    if (!$article) {
+        die("You are not authorized to edit this article.");
+    }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $title = $_POST['title'];
@@ -13,20 +26,14 @@ if (isset($_GET['idarticle'])) {
         $stmt->bind_param("sssi", $title, $content, $image, $idarticle);
 
         if ($stmt->execute()) {
-            header("Locaion: index.php");
+            header("Location: index.php");
         } else {
             echo "Error: " . $stmt->error;
         }
 
         $stmt->close();
-    } 
-
-    $result = $conn->query("SELECT * FROM articles WHERE idarticle = $idarticle");
-    $article = $result->fetch_assoc();
-
-    if (!$article) {
-        die("Article not found.");
     }
+
 } else {
     die("No article ID provided.");
 }

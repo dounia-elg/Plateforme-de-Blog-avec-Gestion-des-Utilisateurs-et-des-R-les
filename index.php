@@ -29,7 +29,7 @@ $result = $conn->query($query);
             <a href="./index.php" class="hover:text-violet-500 " >Home</a>
             <a href="./tags.php" class="hover:text-violet-500">Tags</a>
             <a href="#" class="hover:text-violet-500">About</a>
-            <a href="#" class="hover:text-violet-500">My Article</a>
+            <a href="./my-articles.php" class="hover:text-violet-500">My Articles</a>
         </div>
 
 
@@ -104,7 +104,7 @@ $result = $conn->query($query);
                                         <div class="flex gap-2 justify-end">
                                             
                                             <a href="./Comments/update-comment.php?idcomment=<?= $comment['idcomment'] ?>" class="p-2 text-blue-500 hover:text-blue-700">
-                                                <i class="fa-solid fa-pen" style="color: #007bff;"></i> 
+                                                <i class="fa-solid fa-pen" style="color: #916dfd;"></i> 
                                             </a>
                                             
                                             <a href="./Comments/delete-comment.php?idcomment=<?= $comment['idcomment'] ?>" class="p-2 text-red-500 hover:text-red-700" onclick="return confirm('Are you sure you want to delete this comment?')">

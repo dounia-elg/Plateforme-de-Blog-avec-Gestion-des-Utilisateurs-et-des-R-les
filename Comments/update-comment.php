@@ -4,30 +4,31 @@ session_start();
 
 if (isset($_GET['idcomment'])) {
     $idcomment = $_GET['idcomment'];
+    $iduser = $_SESSION['iduser']; 
+
+    
+    $stmt = $conn->prepare("SELECT content FROM comments WHERE idcomment = ? AND iduser = ?");
+    $stmt->bind_param("ii", $idcomment, $iduser);
+    $stmt->execute();
+    $stmt->bind_result($content);
+    if (!$stmt->fetch()) {
+        echo "You are not authorized to edit this comment.";
+        exit();
+    }
+    $stmt->close();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $content = $_POST['content'];
 
-       
         $stmt = $conn->prepare("UPDATE comments SET content = ? WHERE idcomment = ?");
         $stmt->bind_param("si", $content, $idcomment);
 
-       
         if ($stmt->execute()) {
             header("Location: ../index.php");
         } else {
             echo "Error: " . $stmt->error;
         }
 
-       
-        $stmt->close();
-    } else {
-        
-        $stmt = $conn->prepare("SELECT content FROM comments WHERE idcomment = ?");
-        $stmt->bind_param("i", $idcomment);
-        $stmt->execute();
-        $stmt->bind_result($content);
-        $stmt->fetch();
         $stmt->close();
     }
 } else {
